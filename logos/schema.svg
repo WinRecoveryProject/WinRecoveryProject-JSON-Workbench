@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <rect width="400" height="400" rx="40" fill="#2E7D32"/>
+  <rect x="90" y="70" width="220" height="260" rx="16" fill="#ffffff" opacity="0.95"/>
+  <rect x="120" y="110" width="160" height="14" rx="7" fill="#2E7D32"/>
+  <rect x="120" y="145" width="110" height="12" rx="6" fill="#81C784"/>
+  <rect x="120" y="175" width="140" height="12" rx="6" fill="#81C784"/>
+  <rect x="120" y="205" width="80" height="12" rx="6" fill="#81C784"/>
+  <!-- Checkmark shield badge -->
+  <circle cx="280" cy="280" r="45" fill="#1B5E20"/>
+  <path d="M265 280 l10 10 l20 -20" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

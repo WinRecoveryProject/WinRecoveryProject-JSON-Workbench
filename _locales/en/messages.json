@@ -1,0 +1,10 @@
+{
+   "appDesc": {
+      "description": "The short description of the extension (strictly under 132 chars)",
+      "message": "All-in-one JSON tool: auto-format, repair broken JSON, query with JMESPath & JSONPath, compare diffs and convert to 12+ languages."
+   },
+   "appName": {
+      "description": "The name of the extension optimized for Chrome Web Store search",
+      "message": "JSON Formatter & Viewer - Editor, Query & Diff"
+   }
+}

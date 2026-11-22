@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Studio - All-in-One JSON Workbench</title>
+    <link rel="stylesheet" href="styles/prism.css">
+    <link rel="stylesheet" href="styles/popup.css">
+</head>
+<body>
+    <!-- App Header -->
+    <header class="app-header">
+        <div class="brand-section">
+            <img src="icons/icon-48.png" alt="Logo" class="app-logo-icon">
+            <span class="brand-title">
+                JSON Studio
+            </span>
+        </div>
+        <div class="header-controls">
+            <button id="openFullTabBtn" aria-label="Open in full browser tab" class="header-btn full-tab-btn" title="Open JSON Studio in a full browser tab">↗ <span>Full tab</span></button>
+            <!-- View Source JSON from any tab -->
+            <button id="viewSourceJsonHeaderBtn" class="header-btn" title="View Source JSON document from any tab">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+            </button>
+
+            <!-- JSON Syntax Theme Selector -->
+            <div class="header-dropdown-wrap">
+                <button id="syntaxThemeBtn" class="header-btn" title="Choose JSON Syntax Theme (Colors for Keys, Strings & Numbers)">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle>
+                        <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
+                        <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle>
+                        <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
+                        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path>
+                    </svg>
+                </button>
+                <div id="syntaxThemeDropdown" class="syntax-theme-dropdown" style="display: none;">
+                    <div class="theme-dropdown-header">
+                        <span>JSON Syntax Theme</span>
+                    </div>
+                    <div class="theme-option active" data-theme-id="emerald">
+                        <div class="theme-option-left">
+                            <span class="theme-radio-dot"></span>
+                            <span class="theme-name">Emerald (Green Strings)</span>
+                        </div>
+                        <span class="theme-swatch" title="Key • String • Number • Bool">
+                            <i style="background: #1a73e8;"></i>
+                            <i style="background: #188038;"></i>
+                            <i style="background: #d97706;"></i>
+                            <i style="background: #7c3aed;"></i>
+                        </span>
+                    </div>
+                    <div class="theme-option" data-theme-id="vscode">
+                        <div class="theme-option-left">
+                            <span class="theme-radio-dot"></span>
+                            <span class="theme-name">VS Code Modern</span>
+                        </div>
+                        <span class="theme-swatch" title="Key • String • Number • Bool">
+                            <i style="background: #0284c7;"></i>
+                            <i style="background: #15803d;"></i>
+                            <i style="background: #0d9488;"></i>
+                            <i style="background: #2563eb;"></i>
+                        </span>
+                    </div>
+                    <div class="theme-option" data-theme-id="onedark">
+                        <div class="theme-option-left">
+                            <span class="theme-radio-dot"></span>
+                            <span class="theme-name">One Dark / Tokyo</span>
+                        </div>
+                        <span class="theme-swatch" title="Key • String • Number • Bool">
+                            <i style="background: #e11d48;"></i>
+                            <i style="background: #16a34a;"></i>
+                            <i style="background: #ea580c;"></i>
+                            <i style="background: #0891b2;"></i>
+                        </span>
+                    </div>
+                    <div class="theme-option" data-theme-id="dracula">
+                        <div class="theme-option-left">
+                            <span class="theme-radio-dot"></span>
+                            <span class="theme-name">Dracula</span>
+                        </div>
+                        <span class="theme-swatch" title="Key • String • Number • Bool">
+                            <i style="background: #db2777;"></i>
+                            <i style="background: #65a30d;"></i>
+                            <i style="background: #7c3aed;"></i>
+                            <i style="background: #0284c7;"></i>
+                        </span>
+                    </div>
+                    <div class="theme-option" data-theme-id="monokai">
+                        <div class="theme-option-left">
+                            <span class="theme-radio-dot"></span>
+                            <span class="theme-name">Monokai</span>
+                        </div>
+                        <span class="theme-swatch" title="Key • String • Number • Bool">
+                            <i style="background: #0284c7;"></i>
+                            <i style="background: #b45309;"></i>
+                            <i style="background: #7c3aed;"></i>
+                            <i style="background: #ea580c;"></i>
+                        </span>
+                    </div>
+                    <div class="theme-option" data-theme-id="classic">
+                        <div class="theme-option-left">
+                            <span class="theme-radio-dot"></span>
+                            <span class="theme-name">Classic (Red Strings)</span>
+                        </div>
+                        <span class="theme-swatch" title="Key • String • Number • Bool">
+                            <i style="background: #1a73e8;"></i>
+                            <i style="background: #d93025;"></i>
+                            <i style="background: #188038;"></i>
+                            <i style="background: #1a73e8;"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Auto-detect JSON pages toggle -->
+            <button id="autodetect-btn" class="header-btn" title="Toggle Auto-detect for JSON Web Pages">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <span class="header-indicator"></span>
+            </button>
+            <input type="checkbox" id="autodetect-toggle" class="sr-only" style="display: none;">
+
+            <!-- Dark / Light Theme Toggle -->
+            <button id="theme-toggle-btn" class="header-btn" title="Toggle Dark/Light Theme">
+                <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+                <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
+            <input type="checkbox" id="darkmode-toggle" class="sr-only" style="display: none;">
+        </div>
+    </header>
+
+    <!-- Segmented Navigation Bar -->
+    <nav class="nav-bar">
+        <div class="tab-pill-group">
+            <button class="tab-button active" data-tab="editor" title="Format, Beautify, Minify & Repair JSON">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9"></path>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+                Editor
+            </button>
+            <button class="tab-button" data-tab="query" title="Filter & Query using JMESPath or JSONPath">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                Query
+            </button>
+            <button class="tab-button" data-tab="tree" title="Collapsible Tree & Spreadsheet Table View">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3v12"></path>
+                    <circle cx="12" cy="3" r="1.5"></circle>
+                    <circle cx="12" cy="15" r="1.5"></circle>
+                    <path d="M6 9v6"></path>
+                    <circle cx="6" cy="9" r="1.5"></circle>
+                    <circle cx="6" cy="15" r="1.5"></circle>
+                    <path d="M18 9v6"></path>
+                    <circle cx="18" cy="9" r="1.5"></circle>
+                    <circle cx="18" cy="15" r="1.5"></circle>
+                </svg>
+                Tree &amp; Table
+            </button>
+            <button class="tab-button" data-tab="convert" title="Convert JSON to 16+ Code & Data Formats">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m16 3 4 4-4 4"></path>
+                    <path d="M20 7H4"></path>
+                    <path d="m8 21-4-4 4-4"></path>
+                    <path d="M4 17h16"></path>
+                </svg>
+                Convert
+            </button>
+            <button class="tab-button" data-tab="compare" title="Side-by-side & Structural JSON Diff">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
+                Compare
+            </button>
+            <button class="tab-button" data-tab="utils" title="JWT Decoder, Base64, Schema & Stats">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                </svg>
+                Utilities
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Workspace Content -->
+    <main class="main-content">
+
+        <!-- ==================== TAB 1: EDITOR & FORMAT ==================== -->
+        <div class="tab-content active" id="editor-tab">
+            <div class="action-toolbar editor-toolbar">
+                <div class="toolbar-group">
+                    <button id="format2Btn" class="btn btn-primary" title="Format JSON (Ctrl+Shift+F)">Format</button>
+                    <label class="indent-label">Indent
+                        <select id="indentSelect" aria-label="JSON indentation"><option value="2">2 spaces</option><option value="4">4 spaces</option><option value="tab">Tab</option></select>
+                    </label>
+                    <button id="repairJsonBtn" class="btn btn-repair" title="Preview fixes for broken JSON">Repair</button>
+                </div>
+                <div class="toolbar-group">
+                    <button id="undoEditorBtn" class="icon-btn" title="Undo (Ctrl+Z)" aria-label="Undo" disabled>↶</button>
+                    <button id="redoEditorBtn" class="icon-btn" title="Redo (Ctrl+Shift+Z)" aria-label="Redo" disabled>↷</button>
+                    <button id="copyEditorBtn" class="btn btn-secondary">Copy</button>
+                    <details class="tools-menu">
+                        <summary class="btn btn-secondary">More tools</summary>
+                        <div class="tools-menu-content">
+                            <label class="indent-label">Text size <select id="fontSizeSelect" aria-label="Editor text size"><option value="12">12 px</option><option value="14" selected>14 px</option><option value="16">16 px</option><option value="18">18 px</option></select></label>
+                            <button id="minifyBtn" class="btn btn-secondary">Minify JSON</button>
+                            <button id="sortKeysBtn" class="btn btn-secondary">Sort keys A–Z</button>
+                            <button id="escapeStringBtn" class="btn btn-secondary">Escape / unescape string</button>
+                            <button id="openFileBtn" class="btn btn-secondary">Open file…</button>
+                            <button id="fetchUrlBtn" class="btn btn-secondary">Import from URL…</button>
+                            <button id="clearEditorBtn" class="btn btn-secondary">Clear document</button>
+                        </div>
+                    </details>
+                    <input type="file" id="editorFileInput" class="file-input" accept=".json,.js,.txt">
+                </div>
+            </div>
+            <div id="editorError" class="editor-message" role="status" hidden>
+                <p id="editorErrorText"></p>
+                <button id="jumpToErrorBtn" class="btn btn-secondary">Go to error</button>
+            </div>
+            <div id="editorWelcome" class="editor-welcome">
+                <strong>Start with your JSON</strong>
+                <p>Paste below, drop a file, or choose a starting point.</p>
+                <div class="welcome-actions">
+                    <button id="welcomeFileBtn" class="btn btn-secondary">Open file</button>
+                    <button id="welcomeUrlBtn" class="btn btn-secondary">Import URL</button>
+                    <button id="welcomeSampleBtn" class="btn btn-secondary">Try an example</button>
+                </div>
+                <small>Formatting and processing happen on your device.</small>
+            </div>
+
+            <!-- Code Editor Card -->
+            <div class="studio-card">
+                <div class="editor-wrapper" id="mainEditorWrapper">
+                    <pre class="code-highlight-backdrop" aria-hidden="true"><code id="mainJsonHighlight" class="language-json"></code></pre>
+                    <textarea id="mainJsonInput" aria-label="JSON document" class="code-textarea" placeholder="Paste or drop JSON here..." spellcheck="false"></textarea>
+                </div>
+                <!-- Status bar -->
+                <div class="editor-status-bar">
+                    <span id="jsonStatusChip" class="status-chip" role="status">Empty</span>
+                    <div class="status-info">
+                        <span id="charCountInfo">0 B</span>
+                        <span id="nodeCountInfo">0 nodes</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB 2: QUERY ==================== -->
+        <div class="tab-content" id="query-tab">
+            <div class="query-bar">
+                <div class="query-engine-toggle">
+                    <button id="engineJmesBtn" class="engine-btn active" title="Use JMESPath query engine">JMESPath</button>
+                    <button id="engineJsonPathBtn" class="engine-btn" title="Use JSONPath query engine">JSONPath</button>
+                </div>
+
+                <div class="query-input-wrap">
+                    <svg class="query-input-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" id="jmesPath" class="query-input" placeholder="Query expression (e.g. users[].name or $.users[*].name)" autocomplete="off">
+                    <div id="jmesPathSuggestions" class="jmes-suggestions" role="listbox"></div>
+                    <button id="executeQuery" class="btn btn-primary" title="Execute Query (Ctrl+Enter)">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Run
+                </button>
+                </div>
+
+                <button id="saveQuery" class="icon-btn" title="Save Query">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                        <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                        <polyline points="7 3 7 8 15 8"></polyline>
+                    </svg>
+                </button>
+                <button id="historyBtn" class="icon-btn" title="Query History">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </button>
+                <button id="examplesBtn" class="icon-btn" title="Query Examples">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </button>
+                <button id="querySourceToggle" class="btn btn-secondary" aria-expanded="true" aria-controls="query-source-card">Hide source</button>
+            </div>
+
+            <div id="queryWorkspace" class="query-workspace">
+                <section id="query-source-card" class="studio-card" aria-labelledby="querySourceTitle">
+                    <div class="card-header">
+                        <div><span class="card-title" id="querySourceTitle">Source JSON</span><span id="querySourceMeta" class="query-source-meta">From Editor · Read only</span></div>
+                        <button id="queryEditSource" class="btn btn-secondary sm">Edit in Editor</button>
+                    </div>
+                    <div class="query-source-tools">
+                        <div class="view-mode-toggle" aria-label="Source view">
+                            <button id="querySourceTreeBtn" class="view-mode-btn active" aria-pressed="true">Tree</button>
+                            <button id="querySourceCodeBtn" class="view-mode-btn" aria-pressed="false">Code</button>
+                        </div>
+                        <input id="querySourceSearch" type="search" placeholder="Find a field or value…" aria-label="Search source JSON" autocomplete="off">
+                        <span id="querySourceSearchCount" class="query-source-count" role="status"></span>
+                        <button id="querySourceSearchPrev" class="icon-btn sm" aria-label="Previous source match" title="Previous source match">▲</button>
+                        <button id="querySourceSearchNext" class="icon-btn sm" aria-label="Next source match" title="Next source match">▼</button>
+                    </div>
+                    <p id="querySourceMessage" class="query-source-message" hidden></p>
+                    <div id="querySourceTree" class="tree-view query-source-pane" tabindex="0" aria-label="Read-only source JSON tree"></div>
+                    <pre id="querySourceCodePane" class="query-source-pane query-source-code" tabindex="0" aria-label="Read-only source JSON code" hidden><code id="querySourceCode" class="language-json"></code></pre>
+                    <div id="querySourcePathBar" class="query-source-path" hidden>
+                        <code id="querySourcePath"></code><button id="queryUsePath" class="btn btn-secondary sm" title="Use the selected path as your query">Use path</button>
+                    </div>
+                </section>
+                <div id="querySplitHandle" class="query-split-handle" role="separator" tabindex="0" aria-label="Resize source and result panels" aria-orientation="vertical" aria-valuemin="25" aria-valuemax="70" aria-valuenow="45" aria-controls="query-source-card query-result-card" title="Drag to resize. Use arrow keys, or double-click to reset."></div>
+            <!-- Result Card -->
+            <section class="studio-card" id="query-result-card" aria-label="Query result">
+                <div class="card-header">
+                    <span class="card-title">Query Result</span>
+                    <div class="card-actions">
+                        <button id="useResultBtn" class="btn btn-secondary sm" title="Replace the editor document with this result; Undo restores the source">Use in Editor</button>
+                        <button id="copyResult" class="icon-btn sm" title="Copy Result">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                        <button id="exportResult" class="icon-btn sm" title="Export as JSON">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="query-result-body" tabindex="0" aria-label="Query result JSON">
+                    <pre><code id="result" class="language-json">Execute a query above to see results...</code></pre>
+                </div>
+            </section>
+            </div>
+
+            <div id="savedQueriesList" class="saved-queries-list"></div>
+        </div>
+
+        <!-- ==================== TAB 3: TREE & TABLE ==================== -->
+        <div class="tab-content" id="tree-tab">
+            <div class="studio-card">
+                <div class="card-header">
+                    <div class="view-mode-toggle">
+                        <button id="viewModeTreeBtn" class="view-mode-btn active">Tree View</button>
+                        <button id="viewModeTableBtn" class="view-mode-btn">Table View</button>
+                    </div>
+
+                    <div class="card-actions" id="treeSpecificActions">
+                        <button id="treeSortKeysToggle" class="icon-btn sm" title="Sort keys A–Z">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="m3 16 4 4 4-4"></path>
+                                <path d="M7 20V4"></path>
+                                <path d="M11 4h10"></path>
+                                <path d="M11 8h7"></path>
+                                <path d="M11 12h4"></path>
+                            </svg>
+                        </button>
+                        <button id="expandAll" class="icon-btn sm" title="Expand All">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <polyline points="9 21 3 21 3 15"></polyline>
+                                <line x1="21" y1="3" x2="14" y2="10"></line>
+                                <line x1="3" y1="21" x2="10" y2="14"></line>
+                            </svg>
+                        </button>
+                        <button id="collapseAll" class="icon-btn sm" title="Collapse All">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="4 14 10 14 10 20"></polyline>
+                                <polyline points="20 10 14 10 14 4"></polyline>
+                                <line x1="14" y1="10" x2="21" y2="3"></line>
+                                <line x1="3" y1="21" x2="10" y2="14"></line>
+                            </svg>
+                        </button>
+                        <button id="depth1Btn" class="btn btn-secondary" style="padding: 2px 6px; font-size: 10px;" title="Expand to Level 1">L1</button>
+                        <button id="depth2Btn" class="btn btn-secondary" style="padding: 2px 6px; font-size: 10px;" title="Expand to Level 2">L2</button>
+                        <button id="depth3Btn" class="btn btn-secondary" style="padding: 2px 6px; font-size: 10px;" title="Expand to Level 3">L3</button>
+                        <button class="btn btn-secondary sm peek-source-btn" title="View Source JSON">👁 Source</button>
+                    </div>
+                </div>
+
+                <!-- Tree Search Toolbar -->
+                <div class="tree-toolbar" id="treeSearchToolbar">
+                    <div class="tree-search-wrap">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input id="treeSearchInput" class="tree-search-input" type="text" placeholder="Search tree keys or values..." autocomplete="off">
+                        <span id="treeSearchCount" class="tree-search-count"></span>
+                        <button id="treeSearchPrev" class="icon-btn sm" title="Previous match">▲</button>
+                        <button id="treeSearchNext" class="icon-btn sm" title="Next match">▼</button>
+                        <button id="treeSearchClear" class="icon-btn sm" title="Clear">✕</button>
+                    </div>
+                </div>
+
+                <!-- Perf warning banner -->
+                <div id="treePerfWarning" style="display: none; padding: 6px 12px; background: var(--warning-bg); color: var(--warning); font-size: 11px;">
+                    <span data-perf-text>Large JSON dataset detected.</span>
+                    <button id="dismissTreePerf" class="icon-btn sm" style="float: right;">✕</button>
+                </div>
+
+                <!-- Tree View Pane -->
+                <div id="treeDisplay" class="tree-view" aria-label="JSON Tree View"></div>
+
+                <!-- Table View Pane -->
+                <div id="tableDisplay" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB 4: CONVERT ==================== -->
+        <div class="tab-content" id="convert-tab">
+            <div class="conversion-header">
+                <span style="font-size: 12px; font-weight: 600; color: var(--text-secondary);">Select Target Language or Format</span>
+                <button class="btn btn-secondary sm peek-source-btn" title="View Source JSON">👁 Source</button>
+            </div>
+
+            <!-- Language Cards Grid -->
+            <div class="conversion-grid">
+                <button class="conversion-card" data-lang="typescript">
+                    <img src="logos/typescript.svg" alt="TypeScript">
+                    <span>TypeScript</span>
+                </button>
+                <button class="conversion-card" data-lang="python">
+                    <img src="logos/python.svg" alt="Python">
+                    <span>Python</span>
+                </button>
+                <button class="conversion-card" data-lang="go">
+                    <img src="logos/go.svg" alt="Go">
+                    <span>Go</span>
+                </button>
+                <button class="conversion-card" data-lang="rust">
+                    <img src="logos/rust.png" alt="Rust">
+                    <span>Rust</span>
+                </button>
+                <button class="conversion-card" data-lang="swift">
+                    <img src="logos/swift.png" alt="Swift">
+                    <span>Swift</span>
+                </button>
+                <button class="conversion-card" data-lang="dart">
+                    <img src="logos/dart.png" alt="Dart">
+                    <span>Dart</span>
+                </button>
+                <button class="conversion-card" data-lang="csharp">
+                    <img src="logos/c_sharp.svg" alt="C#">
+                    <span>C#</span>
+                </button>
+                <button class="conversion-card" data-lang="cpp">
+                    <img src="logos/cpp.png" alt="C++">
+                    <span>C++</span>
+                </button>
+                <button class="conversion-card" data-lang="java">
+                    <img src="logos/java.svg" alt="Java">
+                    <span>Java</span>
+                </button>
+                <button class="conversion-card" data-lang="kotlin">
+                    <img src="logos/kotlin.svg" alt="Kotlin">
+                    <span>Kotlin</span>
+                </button>
+                <button class="conversion-card" data-lang="php">
+                    <img src="logos/php.png" alt="PHP">
+                    <span>PHP</span>
+                </button>
+                <button class="conversion-card" data-lang="sql">
+                    <img src="logos/sql.png" alt="SQL">
+                    <span>SQL</span>
+                </button>
+                <button class="conversion-card" data-lang="schema">
+                    <img src="logos/schema.svg" alt="Schema">
+                    <span>Schema</span>
+                </button>
+                <button class="conversion-card" data-lang="csv">
+                    <img src="logos/csv.png" alt="CSV">
+                    <span>CSV</span>
+                </button>
+                <button class="conversion-card" data-lang="yaml">
+                    <img src="logos/yaml.png" alt="YAML">
+                    <span>YAML</span>
+                </button>
+                <button class="conversion-card" data-lang="xml">
+                    <img src="logos/xml.svg" alt="XML">
+                    <span>XML</span>
+                </button>
+            </div>
+
+            <!-- Conversion Result Card -->
+            <div class="studio-card" id="convert-result-card">
+                <div class="card-header">
+                    <span class="card-title">Generated Code</span>
+                    <div class="card-actions">
+                        <button id="copyConverted" class="icon-btn sm" title="Copy Code">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                        <button id="exportConverted" class="icon-btn sm" title="Export to File">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div style="padding: 10px; max-height: 380px; overflow: auto;">
+                    <pre><code id="convertedResult" class="language-typescript">// Select a target language above to generate code</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB 5: COMPARE ==================== -->
+        <div class="tab-content" id="compare-tab">
+            <div class="compare-grid">
+                <!-- JSON A -->
+                <div class="studio-card">
+                    <div class="card-header">
+                        <span class="card-title">JSON A (Original)</span>
+                        <div class="card-actions">
+                            <button id="compareFormatA" class="btn btn-secondary sm" title="Format JSON A">Format</button>
+                            <button id="compareMinifyA" class="btn btn-secondary sm" title="Minify JSON A">Minify</button>
+                        </div>
+                    </div>
+                    <div class="editor-wrapper" id="compareWrapperA" style="min-height: 120px;">
+                        <pre class="code-highlight-backdrop" aria-hidden="true"><code id="compareHighlightA" class="language-json"></code></pre>
+                        <textarea id="compareJsonInputA" class="code-textarea" style="min-height: 120px;" placeholder="Paste JSON A here..." spellcheck="false"></textarea>
+                    </div>
+                </div>
+
+                <!-- JSON B -->
+                <div class="studio-card">
+                    <div class="card-header">
+                        <span class="card-title">JSON B (Modified)</span>
+                        <div class="card-actions">
+                            <button id="compareFormatB" class="btn btn-secondary sm" title="Format JSON B">Format</button>
+                            <button id="compareMinifyB" class="btn btn-secondary sm" title="Minify JSON B">Minify</button>
+                        </div>
+                    </div>
+                    <div class="editor-wrapper" id="compareWrapperB" style="min-height: 120px;">
+                        <pre class="code-highlight-backdrop" aria-hidden="true"><code id="compareHighlightB" class="language-json"></code></pre>
+                        <textarea id="compareJsonInputB" class="code-textarea" style="min-height: 120px;" placeholder="Paste JSON B here..." spellcheck="false"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Run & Swap Bar -->
+            <div class="action-toolbar">
+                <div class="toolbar-group">
+                    <button id="compareRun" class="btn btn-primary">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        Compare Diff
+                    </button>
+                    <button id="compareSwapBtn" class="btn btn-secondary" title="Swap JSON A and JSON B">⇄ Swap A / B</button>
+                    <button class="btn btn-secondary sm peek-source-btn" title="View Source JSON">👁 Source</button>
+                </div>
+                <div class="toolbar-group">
+                    <div class="diff-view-toggle">
+                        <button id="diffViewTree" class="diff-toggle-btn active">Tree Diff</button>
+                        <button id="diffViewSplit" class="diff-toggle-btn">Side-by-Side</button>
+                    </div>
+                    <span id="diffSummary" class="diff-summary"></span>
+                    <button id="copyDiff" class="icon-btn sm" title="Copy diff">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Diff Output Card -->
+            <div class="studio-card" id="compare-result-container">
+                <div id="compareTreeDiff" class="tree-view compare-diff-pane"></div>
+                <div id="compareSideBySide" class="compare-diff-pane" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB 6: UTILITIES ==================== -->
+        <div class="tab-content" id="utils-tab">
+            <div class="utils-nav">
+                <button class="util-tab-btn active" data-util="jwt">JWT Decoder</button>
+                <button class="util-tab-btn" data-util="base64">Base64 JSON</button>
+                <button class="util-tab-btn" data-util="schema">Schema Validator</button>
+                <button class="util-tab-btn" data-util="stats">Statistics</button>
+                <button class="util-tab-btn" data-util="settings">Settings</button>
+                <button class="btn btn-secondary sm peek-source-btn" style="margin-left: auto;" title="View Source JSON">👁 Source</button>
+            </div>
+
+            <!-- Pane 1: JWT Decoder -->
+            <div class="util-pane active" id="util-jwt">
+                <div class="studio-card">
+                    <div class="card-header">
+                        <span class="card-title">JWT Token Input</span>
+                        <button id="decodeJwtBtn" class="btn btn-primary" style="padding: 3px 10px; font-size: 11px;">Decode JWT</button>
+                    </div>
+                    <div style="padding: 10px;">
+                        <textarea id="jwtInput" class="code-textarea" style="min-height: 80px;" placeholder="Paste JWT token (e.g. eyJhbGciOi...)" spellcheck="false"></textarea>
+                    </div>
+                </div>
+                <div class="studio-card" id="jwtResultCard">
+                    <div class="card-header">
+                        <span class="card-title">Decoded Header &amp; Payload</span>
+                        <span id="jwtStatusBadge" class="status-chip" style="display: none;"></span>
+                    </div>
+                    <div style="padding: 10px; max-height: 320px; overflow: auto;">
+                        <pre><code id="jwtResultCode" class="language-json">Decoded JWT payload will appear here...</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pane 2: Base64 JSON -->
+            <div class="util-pane" id="util-base64">
+                <div class="action-toolbar">
+                    <button id="b64EncodeBtn" class="btn btn-primary">JSON ➔ Base64</button>
+                    <button id="b64DecodeBtn" class="btn btn-secondary">Base64 ➔ JSON</button>
+                </div>
+                <div class="studio-card">
+                    <div class="card-header">
+                        <span class="card-title">Base64 String</span>
+                        <button id="copyB64Btn" class="icon-btn sm" title="Copy">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div style="padding: 10px;">
+                        <textarea id="base64Textarea" class="code-textarea" style="min-height: 140px;" placeholder="Base64 encoded string..." spellcheck="false"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pane 3: Schema Validator -->
+            <div class="util-pane" id="util-schema">
+                <div class="action-toolbar">
+                    <button id="validateSchemaBtn" class="btn btn-primary">Validate JSON Against Schema</button>
+                    <button id="generateSchemaBtn" class="btn btn-secondary">Generate Schema from Current JSON</button>
+                </div>
+                <div class="studio-card">
+                    <div class="card-header">
+                        <span class="card-title">JSON Schema (Draft-07)</span>
+                    </div>
+                    <div style="padding: 10px;">
+                        <textarea id="schemaInput" class="code-textarea" style="min-height: 140px;" placeholder="Paste JSON Schema here or click 'Generate Schema'..." spellcheck="false"></textarea>
+                    </div>
+                </div>
+                <div id="schemaValidationResult" style="padding: 10px; border-radius: var(--radius-sm); font-size: 12px; display: none;"></div>
+            </div>
+
+            <!-- Pane 4: Statistics -->
+            <div class="util-pane" id="util-stats">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div id="statSize" class="stat-val">0 B</div>
+                        <div class="stat-label">File Size</div>
+                    </div>
+                    <div class="stat-card">
+                        <div id="statNodes" class="stat-val">0</div>
+                        <div class="stat-label">Total Nodes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div id="statDepth" class="stat-val">0</div>
+                        <div class="stat-label">Max Depth</div>
+                    </div>
+                    <div class="stat-card">
+                        <div id="statKeys" class="stat-val">0</div>
+                        <div class="stat-label">Object Keys</div>
+                    </div>
+                    <div class="stat-card">
+                        <div id="statArrays" class="stat-val">0</div>
+                        <div class="stat-label">Arrays</div>
+                    </div>
+                    <div class="stat-card">
+                        <div id="statStrings" class="stat-val">0</div>
+                        <div class="stat-label">Strings</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pane 5: Settings & JSON Theme Customizer -->
+            <div class="util-pane" id="util-settings">
+                <div class="studio-card">
+                    <div class="card-header">
+                        <span class="card-title">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                            </svg>
+                            JSON Syntax Color Themes
+                        </span>
+                        <span style="font-size: 11px; color: var(--text-muted);">Choose how keys, strings, and numbers are colored</span>
+                    </div>
+                    <div class="settings-theme-grid" id="settingsThemeGrid"></div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Source JSON Quick View Drawer (Accessible from all tabs) -->
+    <div id="sourceJsonDrawer" class="source-json-drawer" style="display: none;" aria-label="Original JSON Viewer">
+        <div class="source-json-content">
+            <div class="drawer-header">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    <span style="font-weight: 600; font-size: 13px;">Original JSON (Tab 1)</span>
+                    <span id="drawerJsonSize" class="status-chip" style="font-size: 10px;">0 B</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <button id="drawerCopyBtn" class="btn btn-secondary sm" title="Copy to clipboard">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        Copy
+                    </button>
+                    <button id="drawerGoEditorBtn" class="btn btn-primary sm" title="Switch to Editor tab">
+                        ✏ Open in Editor
+                    </button>
+                    <button id="drawerCloseBtn" class="icon-btn sm" title="Close drawer">✕</button>
+                </div>
+            </div>
+            <div class="drawer-body">
+                <pre style="margin: 0;"><code id="drawerJsonCode" class="language-json">No JSON data found in Editor tab.</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <dialog id="repairPreviewDialog" class="repair-dialog" aria-labelledby="repairPreviewTitle">
+        <h2 id="repairPreviewTitle">Review JSON repairs</h2>
+        <p id="repairNotes"></p>
+        <div class="repair-preview-grid">
+            <label>Original<textarea id="repairOriginal" readonly aria-label="Original JSON"></textarea></label>
+            <label>Repaired<textarea id="repairProposed" readonly aria-label="Proposed JSON repairs"></textarea></label>
+        </div>
+        <div class="welcome-actions"><button id="applyRepairBtn" class="btn btn-primary">Apply repairs</button><button id="cancelRepairBtn" class="btn btn-secondary">Cancel</button></div>
+    </dialog>
+    <!-- Core Scripts -->
+    <script src="js/jsonDocument.js"></script>
+    <script src="js/vendor/schema-validator.js"></script>
+    <script src="js/prism.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/jmespath.min.js"></script>
+    <script src="js/jsonPath.js"></script>
+    <script src="js/jsonRepair.js"></script>
+    <script src="js/jsonUtils.js"></script>
+    <script src="js/converters.js"></script>
+    <script src="js/treeView.js"></script>
+    <script src="js/tableView.js"></script>
+    <script src="js/jsonDiff.js"></script>
+    <script src="js/jmesIntellisense.js"></script>
+    <script src="js/queryWorkspace.js"></script>
+    <script src="js/popup.js"></script>
+</body>
+</html>

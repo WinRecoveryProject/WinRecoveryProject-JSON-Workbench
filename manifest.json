@@ -1,0 +1,34 @@
+{
+   "action": {
+      "default_icon": {
+         "128": "icons/icon-128.png",
+         "16": "icons/icon-16.png",
+         "48": "icons/icon-48.png"
+      }
+   },
+   "background": {
+      "service_worker": "js/background.js"
+   },
+   "default_locale": "en",
+   "description": "__MSG_appDesc__",
+   "icons": {
+      "128": "icons/icon-128.png",
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiTl5pK0vjyMaItexficM63WqNL2591iHqsOMyjjiLMEyVMoYq2fQqtHmgRkWNitgu82/y9Wd7tIuwmEGRQkXiAMdLHHW2AoFhIbjELDz/xQkQowGq7n0PrWPOfRrjbXfeWYjTz4acv6PgxS7gzb6qPohbZVtlYzAgN0KXRCGJfaKdzZw5LBfAdjym+OxCK+dB3jn8Bj+b/l0SpxXyXJty8w+JvP5ZKP1i/+dyNCkDcEIijNiH8ou0R9sghe11zgRBSTJX5TB2UyiWNpor3OohCvJpUWIbVvXHjxorlBU3FjzllrEcyCvXC4w1+WpzheWI/BzFNKuwkzeGyIS+yF7oQIDAQAB",
+   "manifest_version": 3,
+   "name": "__MSG_appName__",
+   "optional_host_permissions": [ "http://*/*", "https://*/*" ],
+   "optional_permissions": [ "webRequest" ],
+   "permissions": [ "storage", "sidePanel", "activeTab", "scripting" ],
+   "side_panel": {
+      "default_path": "index.html"
+   },
+   "update_url": "https://edge.microsoft.com/extensionwebstorebase/v1/crx",
+   "version": "3.0.1",
+   "web_accessible_resources": [ {
+      "matches": [ "\u003Call_urls>" ],
+      "resources": [ "styles/pageViewer.css" ]
+   } ]
+}
